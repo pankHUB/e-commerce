@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              
+                <ul class="list-group" id="item_list">
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="POST">
+                  {% csrf_token %}
+                    <input type="hidden" id="items" name="items">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Pankul">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" id="inputPassword4" placeholder="Email">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputAddress">Address</label>
+                      <input type="text" id="address" name="address" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">City</label>
+                        <input type="text" id="city" name="city" class="form-control" id="inputCity">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputState">State</label>
+                        <input type="text" class="form-control" id="state" name="state" placeholder="Uttar Pardesh">
+
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label for="inputZip">Zip</label>
+                        <input type="text" id="zip" name="zip" class="form-control" id="inputZip">
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label for="inputZip">Amount to be paid</label>
+                        <input readonly="" type="text" id="total" name="total" class="form-control">
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">CheckOut</button>
+                  </form>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript">
+    if (localStorage.getItem('cart')==null){
+        var cart = {};
+    }
+    else{
+        cart = JSON.parse(localStorage.getItem('cart'));
+    } 
+    
+    let total=0;
+    for(item in cart){
+        let name = cart[item][1];
+        let quantity = cart[item][0];
+        let price = cart[item][2];
+        total=total + cart[item][2]
+
+
+        itemlist = `<li class="list-group-item"><span class="">${quantity}</span>  of  ${name}<span class="badge badge-warning badge-pill">${price}</span></li>`;
+        $('#item_list').append(itemlist);
+
+    }
+    $('#items').val(JSON.stringify(cart));
+    totalprice= `<li class="list-group-item justify-content-between align-item-center d-flex"><b>Your Total Amount</b>${total}</li>`;
+    $('#total').val(total);
+    $('#item_list').append(totalprice);
+</script>
+</html>
